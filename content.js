@@ -10,33 +10,39 @@
    - The block with the HIGHEST day number is shown as today's HUBTOBER.
      Its number also drives the day strip in the hero: earlier days are
      filled in, today is the tall box, later days stay empty.
-   - All other blocks move automatically to "الأيام السابقة" (newest first).
-   - If there is only one block, the previous-days section stays hidden.
+   - Every other block is listed under "الأيام السابقة" at the end of the
+     page (newest first). Visitors can open each one to read it in full.
 
    EVERY DAY
    1. Copy the template below.
-   2. Paste it as a new block at the top of "days" and fill it in.
+   2. Paste it as a new block at the TOP of "days" and fill it in.
    3. Save, then commit and push with GitHub Desktop (see README.md).
 
    IMPORTANT
+   - DO NOT delete or overwrite older days. Only add the new one on top.
+     Yesterday moves down to "الأيام السابقة" by itself.
    - Never add a day before its date. Whatever is in this file is public.
    - Keep the quotes "..." and the comma after each line.
-   - To take a day off the site completely, delete its whole block.
 
    FIELDS
+   - label            the heading beside the big number while the day is
+                      today, e.g. "شيء جرّبه اليوم" / "شيء اقرأه اليوم".
+   - type             one short word shown in the previous-days list,
+                      e.g. جرّب / مقال / بودكاست / فيلم / أداة.
    - description      one text "…", or several paragraphs ["…", "…"].
    - noteTitle/noteText   optional small card under the description. "" hides it.
    - takeaways        2 to 4 short lines.
    - examples         optional list of starting ideas. [] hides the whole row.
-   - url              "https://…"  opens that link in a new tab
-                      "#share"     scrolls down to the مشاركاتكم form
-                      ""           no button
+   - closing          optional last line under the day. "" hides it.
+   - url              "https://…" shows a button that opens the link in a
+                      new tab. "" means no button (for a do-it-yourself day).
 
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
       day: 6,
       date: "6 أكتوبر 2026",
+      label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
       title: "…",
@@ -44,7 +50,7 @@
       description: "…",
       noteTitle: "",
       noteText: "",
-      whyLabel: "ليش اخترنا هذي الحلقة؟",
+      whyLabel: "ليش اخترنا هاي الحلقة؟",
       why: "…",
       takeawaysLabel: "شنو ممكن نطلع منها؟",
       takeaways: [
@@ -55,6 +61,7 @@
       examplesLabel: "",
       examples: [],
       examplesNote: "",
+      closing: "",
       ctaText: "يلا نسمع",
       url: "https://…"
     },
@@ -71,7 +78,8 @@ const HUBTOBER = {
     {
       day: 5,                                   // Day number
       date: "5 أكتوبر 2026",                    // Date shown next to the day
-      type: "جرّب",                             // Content type: مقال / بودكاست / فيلم / موقع / أداة / جرّب …
+      label: "شيء جرّبه اليوم",                 // Heading beside the big number
+      type: "جرّب",                             // Short word for the previous-days list
       titleLabel: "تمرين اليوم",                // Small label above the title
       title: "خلّي شي يسوي شغلة مو شغلته.",     // Title
 
@@ -110,30 +118,54 @@ const HUBTOBER = {
         "ورقة تطويها وتسوي منها شي عملي.",
         "غرض موجود على مكتبك تستخدمه بطريقة ثانية تماماً."
       ],
-      examplesNote: "هذي بس أمثلة حتى تبدأ. مو لازم تسوي مثلها.",
+      examplesNote: "هاي بس أمثلة حتى تبدأ. مو لازم تسوي مثلها.",
 
-      ctaText: "جربتها؟ ورّينا",                // Button text
-      url: "#share"                             // Scrolls down to the مشاركاتكم form
+      closing: "جربتها؟ شوفنا شسويت.",          // Last line under the day
+      ctaText: "",                              // Button text (only used with a url)
+      url: ""                                   // No link today: it is something to do
+    },
+
+    /* ---------------------------- DAY 04 ---------------------------- */
+    {
+      day: 4,
+      date: "4 أكتوبر 2026",
+      label: "شيء اقرأه اليوم",
+      type: "مقال",
+      titleLabel: "عنوان اليوم",
+      title: "ركن المصمّم: مع ريان عبد الله",
+
+      descriptionLabel: "نبذة",
+      description: "حوار مع المصمم العراقي ريان عبد الله عن طريقه للتصميم، وشلون يشوف الثقافة البصرية ووضع التصميم بالعالم العربي. وبيه كلام صريح: ليش المصمم يحتاج وقت ومساحة حتى يفكر ويبحث ويحل المشكلة؟",
+
+      noteTitle: "منو ريان عبد الله؟",
+      noteText: "مصمّم غرافيك وتايبوغرافي عراقي ألماني، من مواليد الموصل 1957، درس التواصل البصري ببرلين. اشتغل بألمانيا على مشاريع هوية كبيرة، منها شغل يخص النسر الاتحادي الألماني وهوية النقل العام ببرلين وفولكسفاغن وبوغاتي، وبعدها صار أستاذ تايبوغرافي واسم مهم بتعليم التصميم.",
+
+      whyLabel: "ليش اخترنا هذا المقال؟",
+      why: "كل يوم نتعامل مع التصميم بدون ما نفكر: منو صمّم هذا الشي؟ ليش شكله هيج؟ وشكد تفكير اكو وراه؟ هذا المقال يخلينا نشوف التصميم بعيون شخص اشتغل عقود بهذا المجال، ونفهم إن التصميم مو بس شي حلو. بيه بحث، تفكير، تواصل، ثقافة، هوية، وحل مشاكل.",
+
+      takeawaysLabel: "شنو ممكن نطلع منه؟",
+      takeaways: [
+        "نشوف التصميم كطريقة تفكير، مو بس شكل حلو.",
+        "نفكر أكثر بعلاقة التصميم بالثقافة والهوية.",
+        "نفهم ليش المصمم يحتاج وقت للبحث والتجربة قبل التنفيذ.",
+        "نتعرف على تجربة مصمم عراقي قدر يبني مسيرة عالمية."
+      ],
+
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+      closing: "",
+
+      ctaText: "يلا نقرأ",
+      // Encoded form of https://www.aajeg.com/ركن-المصمّم-مع-ريان-عبد-الله
+      url: "https://www.aajeg.com/%D8%B1%D9%83%D9%86-%D8%A7%D9%84%D9%85%D8%B5%D9%85%D9%91%D9%85-%D9%85%D8%B9-%D8%B1%D9%8A%D8%A7%D9%86-%D8%B9%D8%A8%D8%AF-%D8%A7%D9%84%D9%84%D9%87"
     }
 
-    /* Days 01–04 have no blocks here, so nothing from them is shown.
-       The day strip still marks them as completed. */
+    /* Days 01–03: add their blocks below Day 04 (same shape) when the content
+       is ready, and they will join "الأيام السابقة". The day strip already
+       marks them as completed. */
 
-  ],
-
-  /* ---------------------------- مشاركاتكم ----------------------------
-     Where the participation form sends what people submit.
-     These two values come from the Supabase project (Project Settings →
-     API). The key is a public one: it is safe to keep it in this file,
-     because the database only lets visitors ADD a submission, never read.
-     While either value is empty, the مشاركاتكم section stays hidden, so
-     the site never shows a form that cannot send.                        */
-  submissions: {
-    supabaseUrl: "",                 // looks like  https://abcdefgh.supabase.co
-    supabaseKey: "",                 // the "publishable" (or "anon public") key
-    bucket: "hubtober-submissions",  // private image folder (created by supabase/setup.sql)
-    table: "submissions"             // table name (created by supabase/setup.sql)
-  }
+  ]
 
 };
 /* ====================== END OF DAILY CONTENT ====================== */
