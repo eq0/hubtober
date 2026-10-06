@@ -10,7 +10,7 @@
    - The block with the HIGHEST day number is shown as today's HUBTOBER.
      Its number also drives the day strip in the hero: earlier days are
      filled in, today is the tall box, later days stay empty.
-   - Every other block is listed under "الأيام السابقة" at the end of the
+   - Every other block is listed under "التجارب السابقة" at the end of the
      page (newest first). Visitors can open each one to read it in full.
 
    EVERY DAY
@@ -20,28 +20,40 @@
 
    IMPORTANT
    - DO NOT delete or overwrite older days. Only add the new one on top.
-     Yesterday moves down to "الأيام السابقة" by itself.
+     Yesterday moves down to "التجارب السابقة" by itself.
    - Never add a day before its date. Whatever is in this file is public.
    - Keep the quotes "..." and the comma after each line.
 
    FIELDS
    - label            the heading beside the big number while the day is
                       today, e.g. "شيء جرّبه اليوم" / "شيء اقرأه اليوم".
-   - type             one short word shown in the previous-days list,
+   - type             one short word shown in the previous list,
                       e.g. جرّب / مقال / بودكاست / فيلم / أداة.
    - description      one text "…", or several paragraphs ["…", "…"].
    - noteTitle/noteText   optional small card under the description. "" hides it.
-   - takeaways        2 to 4 short lines.
+   - rows             optional extra rows between the description and the
+                      "why" row. Each one is { label: "…", content: [ … ] }.
+                      Leave it out when a day does not need any.
+   - why              one text "…", or a list like description.
+   - takeaways        a few short lines.
    - examples         optional list of starting ideas. [] hides the whole row.
-   - closing          optional last line under the day. "" hides it.
+   - closing          optional last line under the day. "" hides it. With two
+                      lines ["…", "…"] the last one is the strong one.
+
+   INSIDE description, why AND A ROW'S content, besides plain "…" paragraphs:
+       { headline: "…" }     the big line of the day (for example the question)
+       { statement: "…" }    a strong line
+       { steps: [ { name: "…", text: "…" }, … ] }   numbered, easy to scan
+       { list: [ "…", "…" ] }                       short lines with a dash
+   Day 06 below uses all four.
    - url              "https://…" shows a button that opens the link in a
                       new tab. "" means no button (for a do-it-yourself day).
 
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 6,
-      date: "6 أكتوبر 2026",
+      day: 7,
+      date: "7 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -74,12 +86,109 @@ const HUBTOBER = {
 
   days: [
 
+    /* ---------------------------- DAY 06 ---------------------------- */
+    {
+      day: 6,                                   // Day number
+      date: "6 أكتوبر 2026",                    // Date shown next to the day
+      label: "شيء جرّبه اليوم",                 // Heading beside the big number
+      type: "جرّب",                             // Short word for the previous list
+      titleLabel: "تمرين اليوم",                // Small label above the title
+      title: "نفس السؤال، بثلاث أماكن مختلفة.", // Title
+
+      // What to do
+      descriptionLabel: "شنو تسوي؟",
+      description: [
+        "اليوم راح نجرب نبحث، بس مو لحتى نطلع بجواب سريع.",
+        "راح ناخذ نفس السؤال ونبحث عليه بأكثر من مكان حتى نشوف شلون كل مصدر ينطينا الموضوع من زاوية مختلفة."
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      // Extra rows for this day
+      rows: [
+        {
+          label: "سؤال اليوم:",
+          content: [
+            { headline: "هل العمل من البيت يخلي الناس أكثر إنتاجية لو أقل؟" }
+          ]
+        },
+        {
+          label: "ابحث عن السؤال بثلاث أماكن:",
+          content: [
+            { steps: [
+              { name: "Google",
+                text: "دور على مقال، دراسة، تقرير، أو أرقام تتكلم عن الموضوع." },
+              { name: "Reddit",
+                text: "اقره عن تجارب الناس الي اشتغلوا من البيت فعلياً. بشنو فادهم؟ وشنو المشاكل الي واجهوها؟" },
+              { name: "YouTube أو Substack",
+                text: "دور على شخص يناقش الموضوع بشكل أعمق، يشرح رأيه أو يحلل التجربة من زوايا مختلفة." }
+            ] },
+            "البحث مايحتاج يطول ساعات. ممكن تاخذ تقريباً 5 دقايق بكل مكان، وتشوف شنو يطلع لك."
+          ]
+        },
+        {
+          label: "لا تدور على الجواب بس.",
+          content: [
+            "خلي عملية البحث تكون دقيقة بالملاحظة.",
+            { list: [
+              "شنو عرفت من Google بس مالكيته بـ Reddit؟",
+              "وشنو عرفته من تجارب الناس وما جان موجود بالدراسات والمقالات؟",
+              "وهل التحليل أو الرأي خلاك تشوف الموضوع بطريقة ثانية؟"
+            ] }
+          ]
+        },
+        {
+          label: "وبالنهاية اسأل نفسك:",
+          content: [
+            { list: [
+              "هل تغير جوابك بعد ما بحثت بأكثر من مكان؟",
+              "وإذا جان عندك سؤال مشابه بالمستقبل، وين راح تدور أول شي؟ وليش؟"
+            ] }
+          ]
+        }
+      ],
+
+      // Why we are doing it
+      whyLabel: "ليش نسويها؟",
+      why: [
+        "لأن البحث مو بس كتابة السؤال وأخذ أول جواب يطلع.",
+        "مرات تحتاج أرقام ودراسات، ومرات تحتاج تجربة شخص عاش الموضوع، ومرات تحتاج أحد يحلل لك الصورة الأكبر.",
+        "المصدر الي تختاره يغير المعرفة الي راح تكتسبها.",
+        "ولهذا جزء مهم من البحث هو:",
+        { statement: "وين تدور؟" }
+      ],
+
+      // What we can get from it
+      takeawaysLabel: "شنو ممكن نطلع منها؟",
+      takeaways: [
+        "نفرق بين المعلومة، التجربة، والرأي.",
+        "نعرف إن مو كل سؤال ينبحث بنفس المكان.",
+        "نتعود ما نعتمد على أول نتيجة تطلع لنا.",
+        "نتعلم نستخدم Google وReddit وYouTube وSubstack كأدوات بحث، مو بس أماكن نتصفح بيها.",
+        "نشوف الموضوع من أكثر من زاوية قبل ما نكون رأينا."
+      ],
+
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+
+      // Closing statement: the last line is the strong one
+      closing: [
+        "مو الهدف توصل للجواب الصح.",
+        "الهدف تعرف شلون تبحث بطريقة أفضل."
+      ],
+
+      ctaText: "",                              // Button text (only used with a url)
+      url: ""                                   // No link today: it is something to do
+    },
+
     /* ---------------------------- DAY 05 ---------------------------- */
     {
       day: 5,                                   // Day number
       date: "5 أكتوبر 2026",                    // Date shown next to the day
       label: "شيء جرّبه اليوم",                 // Heading beside the big number
-      type: "جرّب",                             // Short word for the previous-days list
+      type: "جرّب",                             // Short word for the previous list
       titleLabel: "تمرين اليوم",                // Small label above the title
       title: "خلّي شي يسوي شغلة مو شغلته.",     // Title
 
@@ -162,7 +271,7 @@ const HUBTOBER = {
     }
 
     /* Days 01–03: add their blocks below Day 04 (same shape) when the content
-       is ready, and they will join "الأيام السابقة". The day strip already
+       is ready, and they will join "التجارب السابقة". The day strip already
        marks them as completed. */
 
   ]

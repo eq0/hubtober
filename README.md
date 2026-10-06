@@ -27,7 +27,7 @@ The same live link updates by itself, usually within one to two minutes. If you 
 ## How the days work
 
 - The day with the highest number in `content.js` is shown as **today**, right under the header.
-- Every older day stays in the file and is listed under **الأيام السابقة** at the end of the page, newest first. Visitors can open any of them to read it in full.
+- Every older day stays in the file and is listed under **التجارب السابقة** at the end of the page, newest first. Visitors can open any of them to read it in full.
 - **Never delete or overwrite an older day** when adding a new one. Add the new block on top; yesterday moves down by itself.
 - **Never add a day before its date.** Everything in `content.js` is public, so future days stay out of the file until their day comes.
 

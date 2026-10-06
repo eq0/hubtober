@@ -305,11 +305,37 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 }
 .row dt { font-family: var(--font-display); font-weight: 700; font-size: var(--t-base); line-height: 1.8; }
 .row dd { font-size: var(--t-md); max-width: 32em; overflow-wrap: anywhere; }
-.row dd p + p { margin-top: .7em; }
+.row dd > * + * { margin-top: .7em; }
 .row dd p.is-lead { font-weight: 600; }
 
+/* Strong lines inside a day: a statement, and the bigger line of the day */
+.say {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--t-lead); line-height: 1.5;
+  text-wrap: balance;
+}
+.say--big { font-weight: 800; font-size: clamp(24px, 3.3vw, 40px); line-height: 1.4; }
+
+/* Numbered steps: a number, a name, one line each, easy to scan */
+.steps { display: flex; flex-direction: column; }
+.steps li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 16px;
+  padding-block: 14px 16px;
+  border-top: 1px solid var(--row-rule, var(--rule-on-ink));
+}
+.steps li:first-child { border-top: 0; padding-top: 2px; }
+.steps li:last-child { padding-bottom: 2px; }
+.steps__num {
+  min-width: .72em; padding-top: 3px;
+  font-weight: 800; font-stretch: 75%;
+  font-size: clamp(30px, 3.2vw, 40px); line-height: 1; letter-spacing: -.04em;
+}
+.steps__name { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 1.7vw, 22px); line-height: 1.5; }
+.steps__body p { margin-top: 2px; }
+
 /* Small "who is this?" card under the description */
-.who { margin-top: 18px; padding: 14px 18px 16px; border: 1px solid var(--rule-on-ink); }
+.row dd > .who { margin-top: 18px; }
+.who { padding: 14px 18px 16px; border: 1px solid var(--rule-on-ink); }
 .who h4 { font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1.8; margin-bottom: 2px; }
 .who p { font-size: 15px; line-height: 1.8; color: var(--paper-soft); }
 
@@ -341,11 +367,15 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 /* Same button on paper (used inside an opened previous day) */
 .btn--ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .btn--ink[href]:hover, .btn--ink[href]:focus-visible { background: var(--paper); color: var(--ink); }
-/* Optional last line under the day */
+/* Closing statement under the day: one strong line, or a light line then a strong one */
 .today__closing {
-  margin-top: clamp(28px, 4vw, 44px);
-  font-family: var(--font-display); font-weight: 700; font-size: var(--t-lead); line-height: 1.5;
+  margin-top: clamp(32px, 5vw, 56px);
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(24px, 3.6vw, 44px); line-height: 1.4;
+  text-wrap: balance;
 }
+.today__closing span, .prev__closing span { display: block; }
+.today__closing .is-soft { font-weight: 300; }
 .today__urlnote {
   margin-top: 12px;
   font-size: 12px; line-height: 1.6; color: var(--paper-soft);
@@ -416,15 +446,19 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 .prev__body { padding-bottom: clamp(26px, 4vw, 44px); }
 .prev__day[open] .prev__body { animation: prev-open .5s var(--ease); }
 @keyframes prev-open { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-.prev__rows { border-top: 1px solid var(--rule-soft); }
+.prev__rows { --row-rule: var(--rule-soft); border-top: 1px solid var(--rule-soft); }
 .prev__rows .row { border-bottom-color: var(--rule-soft); }
 .prev__rows .row dd { font-size: var(--t-base); }
 .prev__rows .who { border-color: var(--rule-soft); }
 .prev__rows .who p, .prev__rows .takeaways--soft { color: var(--ink-soft); }
+.prev__rows .say { font-size: var(--t-md); }
+.prev__rows .say--big { font-size: clamp(20px, 2.4vw, 28px); }
+.prev__rows .steps__num { font-size: 30px; }
 .prev__closing {
   margin-top: 22px;
   font-family: var(--font-display); font-weight: 700; font-size: var(--t-md); line-height: 1.6;
 }
+.prev__closing .is-soft { font-weight: 400; }
 .prev__body .btn { margin-top: clamp(22px, 3vw, 30px); }
 
 @media (min-width: 860px) {
@@ -506,7 +540,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       <div class="strip" id="strip" hidden>
         <div class="strip__days" id="strip-days" aria-hidden="true"></div>
         <p class="strip__caption">
-          <span>اليوم <b id="strip-day">05</b> من <span id="strip-total">31</span></span>
+          <span>اليوم <b id="strip-day">06</b> من <span id="strip-total">31</span></span>
           <span>كل يوم بيومه</span>
         </p>
       </div>
@@ -522,13 +556,13 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     <section class="today" id="today" aria-labelledby="today-label">
       <div class="wrap">
         <header class="today__head reveal">
-          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">05</span></p>
+          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">06</span></p>
           <p class="today__date" data-today="date"></p>
         </header>
 
         <div class="today__grid">
           <div class="today__aside reveal">
-            <p class="today__num mono" aria-hidden="true" data-today="day">05</p>
+            <p class="today__num mono" aria-hidden="true" data-today="day">06</p>
             <div class="today__meta">
               <h2 class="tag" id="today-label" data-today="label"></h2>
             </div>
@@ -538,35 +572,9 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
             <p class="field-label" data-today="titleLabel"></p>
             <h3 class="today__title" data-today="title"></h3>
 
-            <dl class="today__rows">
-              <div class="row">
-                <dt data-today="descriptionLabel">نبذة</dt>
-                <dd>
-                  <div id="today-description"></div>
-                  <div class="who" id="today-note" hidden>
-                    <h4 data-today="noteTitle"></h4>
-                    <p data-today="noteText"></p>
-                  </div>
-                </dd>
-              </div>
-              <div class="row">
-                <dt data-today="whyLabel">ليش اخترناه؟</dt>
-                <dd data-today="why"></dd>
-              </div>
-              <div class="row">
-                <dt data-today="takeawaysLabel">شنو ممكن نطلع منه؟</dt>
-                <dd><ul class="takeaways" id="today-takeaways"></ul></dd>
-              </div>
-              <div class="row" id="today-examples-row" hidden>
-                <dt data-today="examplesLabel"></dt>
-                <dd>
-                  <ul class="takeaways takeaways--soft" id="today-examples"></ul>
-                  <p class="examples-note" data-today="examplesNote"></p>
-                </dd>
-              </div>
-            </dl>
+            <dl class="today__rows" id="today-rows"></dl>
 
-            <p class="today__closing" id="today-closing" data-today="closing" hidden></p>
+            <p class="today__closing" id="today-closing" hidden></p>
 
             <a class="btn" id="today-cta" target="_blank" rel="noopener noreferrer">
               <span data-today="ctaText"></span>
@@ -674,7 +682,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       <div class="wrap">
         <div class="prev__inner">
           <div class="prev__head reveal">
-            <h2 class="section__title" id="prev-title">الأيام السابقة</h2>
+            <h2 class="section__title" id="prev-title">التجارب السابقة</h2>
             <p class="note">كل اللي شاركناه لحد هسه. والأيام الجاية تبقى مفاجأة.</p>
           </div>
           <ol class="prev__list reveal" id="prev-list"></ol>
@@ -715,17 +723,6 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
   var PLUS = '<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>';
 
   function pad(n) { return String(n).padStart(2, "0"); }
-  function fillList(id, lines) {
-    var list = document.getElementById(id);
-    list.textContent = "";
-    (lines || []).forEach(function (line) {
-      if (!line) return;
-      var li = el("li");
-      li.appendChild(el("span", "", line));
-      list.appendChild(li);
-    });
-    return list.children.length;
-  }
   function isLink(url) { return typeof url === "string" && /^https?:\/\/\S+$/i.test(url.trim()); }
   function el(tag, className, text) {
     var node = document.createElement(tag);
@@ -737,6 +734,102 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     document.querySelectorAll('[data-today="' + key + '"]').forEach(function (node) {
       node.textContent = value == null ? "" : value;
     });
+  }
+
+  /* ---- One day's content, built the same way whether it is today or a
+          previous day, so nothing changes or gets lost when a day moves down.
+
+     A text field in content.js (description, why, or a row's content) is one
+     text "…" or a list of blocks. A block is a paragraph "…", or one of:
+       { headline: "…" }                      the big line of the day
+       { statement: "…" }                     a strong line
+       { steps: [ { name: "…", text: "…" } ] }  numbered, easy to scan
+       { list: [ "…", "…" ] }                 short lines with a dash        ---- */
+  function listOf(lines, soft) {
+    var list = el("ul", soft ? "takeaways takeaways--soft" : "takeaways");
+    (lines || []).forEach(function (line) {
+      if (!line) return;
+      var li = el("li");
+      li.appendChild(el("span", "", line));
+      list.appendChild(li);
+    });
+    return list;
+  }
+  function stepsOf(steps) {
+    var list = el("ol", "steps");
+    (steps || []).forEach(function (step, index) {
+      if (!step) return;
+      var li = el("li");
+      li.appendChild(el("span", "steps__num mono", String(index + 1)));
+      var body = el("div", "steps__body");
+      body.appendChild(el("h4", "steps__name", step.name));
+      if (step.text) body.appendChild(el("p", "", step.text));
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+    return list;
+  }
+  function blocksOf(value, leadFirst) {
+    var blocks = (Array.isArray(value) ? value : [value]).filter(Boolean);
+    var texts = blocks.filter(function (b) { return typeof b === "string"; }).length;
+    var seenText = false;
+    return blocks.map(function (block) {
+      if (typeof block === "string") {
+        var lead = leadFirst && texts > 1 && !seenText;   // with several paragraphs, the first reads as the lead
+        seenText = true;
+        return el("p", lead ? "is-lead" : "", block);
+      }
+      if (block.headline) return el("p", "say say--big", block.headline);
+      if (block.statement) return el("p", "say", block.statement);
+      if (block.steps) return stepsOf(block.steps);
+      if (block.list) return listOf(block.list, false);
+      return null;
+    }).filter(Boolean);
+  }
+  function firstText(value) {
+    var blocks = (Array.isArray(value) ? value : [value]).filter(function (b) { return typeof b === "string" && b; });
+    return blocks[0] || "";
+  }
+  function rowOf(label, nodes) {
+    var row = el("div", "row");
+    row.appendChild(el("dt", "", label));
+    var dd = el("dd");
+    nodes.forEach(function (node) { if (node) dd.appendChild(node); });
+    row.appendChild(dd);
+    return row;
+  }
+  function rowsOf(d) {
+    var rows = [];
+    var desc = blocksOf(d.description, true);
+    if (d.noteTitle && d.noteText) {
+      var note = el("div", "who");
+      note.appendChild(el("h4", "", d.noteTitle));
+      note.appendChild(el("p", "", d.noteText));
+      desc.push(note);
+    }
+    if (desc.length) rows.push(rowOf(d.descriptionLabel || "نبذة", desc));
+    (d.rows || []).forEach(function (extra) {
+      var nodes = extra ? blocksOf(extra.content, false) : [];
+      if (nodes.length) rows.push(rowOf(extra.label || "", nodes));
+    });
+    var why = blocksOf(d.why, false);
+    if (why.length) rows.push(rowOf(d.whyLabel || "ليش اخترناه؟", why));
+    if ((d.takeaways || []).length) rows.push(rowOf(d.takeawaysLabel || "شنو ممكن نطلع منه؟", [listOf(d.takeaways, false)]));
+    if ((d.examples || []).length) {
+      rows.push(rowOf(d.examplesLabel || "", [
+        listOf(d.examples, true),
+        d.examplesNote ? el("p", "examples-note", d.examplesNote) : null
+      ]));
+    }
+    return rows;
+  }
+  // Closing: one line, or several (the last one carries the weight)
+  function closingInto(node, d) {
+    var lines = (Array.isArray(d.closing) ? d.closing : [d.closing]).filter(Boolean);
+    lines.forEach(function (line, index) {
+      node.appendChild(el("span", index === lines.length - 1 ? "is-strong" : "is-soft", line));
+    });
+    return lines.length > 0;
   }
 
   /* ---- Sort days: highest day number is today, the rest are previous ---- */
@@ -754,37 +847,13 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     fill("label", today.label || today.type);
     fill("titleLabel", today.titleLabel);
     fill("title", today.title);
-    fill("descriptionLabel", today.descriptionLabel || "نبذة");
-    fill("whyLabel", today.whyLabel || "ليش اخترناه؟");
-    fill("why", today.why);
-    fill("takeawaysLabel", today.takeawaysLabel || "شنو ممكن نطلع منه؟");
     fill("ctaText", today.ctaText);
-    if (today.closing) {
-      fill("closing", today.closing);
-      document.getElementById("today-closing").hidden = false;
-    }
 
-    // Description: one text, or several paragraphs (the first one reads as the lead)
-    var paragraphs = (Array.isArray(today.description) ? today.description : [today.description]).filter(Boolean);
-    var descBox = document.getElementById("today-description");
-    paragraphs.forEach(function (text, index) {
-      descBox.appendChild(el("p", paragraphs.length > 1 && index === 0 ? "is-lead" : "", text));
-    });
+    var todayRows = document.getElementById("today-rows");
+    rowsOf(today).forEach(function (row) { todayRows.appendChild(row); });
 
-    if (today.noteTitle && today.noteText) {
-      fill("noteTitle", today.noteTitle);
-      fill("noteText", today.noteText);
-      document.getElementById("today-note").hidden = false;
-    }
-
-    fillList("today-takeaways", today.takeaways);
-
-    // Optional starting ideas
-    if (fillList("today-examples", today.examples)) {
-      fill("examplesLabel", today.examplesLabel);
-      fill("examplesNote", today.examplesNote);
-      document.getElementById("today-examples-row").hidden = false;
-    }
+    var todayClosing = document.getElementById("today-closing");
+    if (closingInto(todayClosing, today)) todayClosing.hidden = false;
 
     // Button: only for a day that links somewhere. No url, no button.
     var cta = document.getElementById("today-cta");
@@ -821,31 +890,12 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 
   /* ---- Previous days: every day except today, newest first.
           Each row opens (a native <details>) to show that day in full. ---- */
-  function listOf(lines, soft) {
-    var list = el("ul", soft ? "takeaways takeaways--soft" : "takeaways");
-    (lines || []).forEach(function (line) {
-      if (!line) return;
-      var li = el("li");
-      li.appendChild(el("span", "", line));
-      list.appendChild(li);
-    });
-    return list;
-  }
-  function rowOf(label, nodes) {
-    var row = el("div", "row");
-    row.appendChild(el("dt", "", label));
-    var dd = el("dd");
-    nodes.forEach(function (node) { if (node) dd.appendChild(node); });
-    row.appendChild(dd);
-    return row;
-  }
-
   if (previous.length) {
     var prevList = document.getElementById("prev-list");
     previous.forEach(function (d) {
       var item = el("li", "prev__item");
       var day = el("details", "prev__day");
-      var paragraphs = (Array.isArray(d.description) ? d.description : [d.description]).filter(Boolean);
+      var teaser = firstText(d.description);
 
       // Closed row
       var head = el("summary", "prev__link");
@@ -857,7 +907,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       var title = el("h3", "prev__title");
       title.appendChild(el("span", "u", d.title));
       text.appendChild(title);
-      if (paragraphs.length) text.appendChild(el("p", "prev__desc", paragraphs[0]));
+      if (teaser) text.appendChild(el("p", "prev__desc", teaser));
       head.appendChild(text);
       var more = el("span", "prev__cta");
       more.appendChild(el("span", "", "التفاصيل"));
@@ -869,27 +919,11 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       var body = el("div", "prev__body");
       var rows = el("dl", "prev__rows");
 
-      var descNodes = paragraphs.map(function (line, index) {
-        return el("p", paragraphs.length > 1 && index === 0 ? "is-lead" : "", line);
-      });
-      if (d.noteTitle && d.noteText) {
-        var note = el("div", "who");
-        note.appendChild(el("h4", "", d.noteTitle));
-        note.appendChild(el("p", "", d.noteText));
-        descNodes.push(note);
-      }
-      if (descNodes.length) rows.appendChild(rowOf(d.descriptionLabel || "نبذة", descNodes));
-      if (d.why) rows.appendChild(rowOf(d.whyLabel || "ليش اخترناه؟", [el("p", "", d.why)]));
-      if ((d.takeaways || []).length) rows.appendChild(rowOf(d.takeawaysLabel || "شنو ممكن نطلع منه؟", [listOf(d.takeaways, false)]));
-      if ((d.examples || []).length) {
-        rows.appendChild(rowOf(d.examplesLabel || "", [
-          listOf(d.examples, true),
-          d.examplesNote ? el("p", "examples-note", d.examplesNote) : null
-        ]));
-      }
+      rowsOf(d).forEach(function (row) { rows.appendChild(row); });
       body.appendChild(rows);
 
-      if (d.closing) body.appendChild(el("p", "prev__closing", d.closing));
+      var closing = el("p", "prev__closing");
+      if (closingInto(closing, d)) body.appendChild(closing);
 
       if (isLink(d.url)) {
         var go = el("a", "btn btn--ink");
