@@ -29,6 +29,8 @@
                       today, e.g. "شيء جرّبه اليوم" / "شيء اقرأه اليوم".
    - type             one short word shown in the previous list,
                       e.g. جرّب / مقال / بودكاست / فيلم / أداة.
+   - descriptionLabel the label of the first row. "" means no label: the
+                      description then opens the day like an intro paragraph.
    - description      one text "…", or several paragraphs ["…", "…"].
    - noteTitle/noteText   optional small card under the description. "" hides it.
    - rows             optional extra rows between the description and the
@@ -44,16 +46,17 @@
        { headline: "…" }     the big line of the day (for example the question)
        { statement: "…" }    a strong line
        { steps: [ { name: "…", text: "…" }, … ] }   numbered, easy to scan
+                             (a step's text can itself be a list of blocks)
        { list: [ "…", "…" ] }                       short lines with a dash
-   Day 06 below uses all four.
+   Day 06 below uses all four. A line break inside a text is written \n.
    - url              "https://…" shows a button that opens the link in a
                       new tab. "" means no button (for a do-it-yourself day).
 
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 7,
-      date: "7 أكتوبر 2026",
+      day: 8,
+      date: "8 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -85,6 +88,100 @@ const HUBTOBER = {
   totalDays: 31,   // days in the campaign (drives the day strip in the hero)
 
   days: [
+
+    /* ---------------------------- DAY 07 ---------------------------- */
+    {
+      day: 7,                                   // Day number
+      date: "7 أكتوبر 2026",                    // Date shown next to the day
+      label: "شيء جرّبه اليوم",                 // Heading beside the big number
+      type: "جرّب",                             // Short word for the previous list
+      titleLabel: "تمرين اليوم",                // Small label above the title
+      title: "شنو تشوف غير الي موجود؟",         // Title
+
+      // Opening text (no label)
+      descriptionLabel: "",
+      description: [
+        "مرات نشوف غيمة ونحسها تشبه حيوان،\nأو نشوف نقش بالكاشي ونطلع منه وجه أو شكل،\nأو نمر على باب قديم ونحس وراه قصة كاملة.",
+        "اليوم جرّب تنتبه لهاللحظات، وارجع غوص بمخيلتك مثل ما جنت تسوي وإنت طفل، من جان أي شي بسيط ممكن يتحول براسك لشي ثاني تماماً."
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      // Extra rows for this day
+      rows: [
+        {
+          label: "المطلوب:",
+          content: [
+            "اختار أي شي موجود حواليك ولفت نظرك.",
+            "ممكن يكون:",
+            { list: [
+              "غيمة",
+              "ظل",
+              "نقش بالكاشي أو السيراميك",
+              "جدار",
+              "شجرة",
+              "بقعة ضوء",
+              "قطعة أثاث",
+              "شكل عشوائي بالطريق",
+              "أو أي شي يخليك تشوف أكثر من الشي الموجود فعلياً"
+            ] },
+            "وخذله صورة."
+          ]
+        },
+        {
+          label: "وبعدين اختار وحدة من طريقتين:",
+          content: [
+            { steps: [
+              { name: "ارسم الي تخيلته",
+                text: [
+                  "ارسم فوق الصورة مباشرة شنو شفت بيها.",
+                  "إذا شفت وجه، شخصية، مخلوق، مكان، أو أي شكل ثاني، كمله بطريقتك.",
+                  "مو مهم الرسم يكون حلو أو احترافي.\nالمهم تبين شنو خيالك شاف."
+                ] },
+              { name: "احچي القصة الي اجت ببالك",
+                text: [
+                  "إذا الشي خلاك تتخيل قصة بدل شكل، خذ الصورة واكتب وياها كم سطر عن القصة الي اجت ببالك.",
+                  { list: [
+                    "منو موجود بيها؟",
+                    "شنو صار؟",
+                    "وين ممكن يكون هذا المكان؟",
+                    "وشنو بالشي خلاك تتخيل هاي القصة أصلاً؟"
+                  ] }
+                ] }
+            ] }
+          ]
+        }
+      ],
+
+      // Why we are doing it
+      whyLabel: "ليش نسويها؟",
+      why: [
+        "لأن الخيال ينقذنا بهواي مواقف، ونحتاجه تقريباً بكل مرحلة من حياتنا.",
+        "هو الي يخلينا نربط بين أشياء يمكن ما بينها علاقة واضحة، نشوف احتمالات أكثر، ونطلع بأفكار ما جانت موجودة كدامنا من البداية.",
+        "ومرات حتى نرجع نحرك خيالنا، كل الي نحتاجه هو نوقف شوي ونشوف الشي العادي بطريقة مختلفة."
+      ],
+
+      // What we can get from it
+      takeawaysLabel: "شلون هالشي ممكن يفيدنا؟",
+      takeaways: [
+        "ننتبه أكثر للتفاصيل الي عادة نتجاوزها.",
+        "ندرب خيالنا نطلع أشكال وقصص من أشياء بسيطة.",
+        "نتمرن نشوف أكثر من احتمال لنفس الشي.",
+        "نكتشف شلون نفس الصورة ممكن كل شخص يشوف بيها شي مختلف.",
+        'نرجع نستخدم خيالنا بدون ما نفكر إذا النتيجة "صح" أو "غلط".'
+      ],
+
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+
+      // Closing statement
+      closing: "شوف الشي مثل ما خيالك يريد يشوفه.",
+
+      ctaText: "",                              // Button text (only used with a url)
+      url: ""                                   // No link today: it is something to do
+    },
 
     /* ---------------------------- DAY 06 ---------------------------- */
     {

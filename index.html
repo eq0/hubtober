@@ -306,7 +306,10 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 .row dt { font-family: var(--font-display); font-weight: 700; font-size: var(--t-base); line-height: 1.8; }
 .row dd { font-size: var(--t-md); max-width: 32em; overflow-wrap: anywhere; }
 .row dd > * + * { margin-top: .7em; }
+.row dd p { white-space: pre-line; }          /* a line break typed in content.js stays a line break */
 .row dd p.is-lead { font-weight: 600; }
+/* A row without a label: its text runs from the edge, like an opening paragraph */
+.row.row--plain { grid-template-columns: minmax(0, 1fr); }
 
 /* Strong lines inside a day: a statement, and the bigger line of the day */
 .say {
@@ -318,20 +321,21 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 
 /* Numbered steps: a number, a name, one line each, easy to scan */
 .steps { display: flex; flex-direction: column; }
-.steps li {
+.steps > li {
   display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 16px;
   padding-block: 14px 16px;
   border-top: 1px solid var(--row-rule, var(--rule-on-ink));
 }
-.steps li:first-child { border-top: 0; padding-top: 2px; }
-.steps li:last-child { padding-bottom: 2px; }
+.steps > li:first-child { border-top: 0; padding-top: 2px; }
+.steps > li:last-child { padding-bottom: 2px; }
 .steps__num {
   min-width: .72em; padding-top: 3px;
   font-weight: 800; font-stretch: 75%;
   font-size: clamp(30px, 3.2vw, 40px); line-height: 1; letter-spacing: -.04em;
 }
 .steps__name { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 1.7vw, 22px); line-height: 1.5; }
-.steps__body p { margin-top: 2px; }
+.steps__body > * + * { margin-top: .55em; }
+.steps__body > .steps__name + * { margin-top: 2px; }
 
 /* Small "who is this?" card under the description */
 .row dd > .who { margin-top: 18px; }
@@ -540,7 +544,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       <div class="strip" id="strip" hidden>
         <div class="strip__days" id="strip-days" aria-hidden="true"></div>
         <p class="strip__caption">
-          <span>اليوم <b id="strip-day">06</b> من <span id="strip-total">31</span></span>
+          <span>اليوم <b id="strip-day">07</b> من <span id="strip-total">31</span></span>
           <span>كل يوم بيومه</span>
         </p>
       </div>
@@ -556,13 +560,13 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     <section class="today" id="today" aria-labelledby="today-label">
       <div class="wrap">
         <header class="today__head reveal">
-          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">06</span></p>
+          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">07</span></p>
           <p class="today__date" data-today="date"></p>
         </header>
 
         <div class="today__grid">
           <div class="today__aside reveal">
-            <p class="today__num mono" aria-hidden="true" data-today="day">06</p>
+            <p class="today__num mono" aria-hidden="true" data-today="day">07</p>
             <div class="today__meta">
               <h2 class="tag" id="today-label" data-today="label"></h2>
             </div>
@@ -744,6 +748,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
        { headline: "…" }                      the big line of the day
        { statement: "…" }                     a strong line
        { steps: [ { name: "…", text: "…" } ] }  numbered, easy to scan
+                                              (a step's text can be a list of blocks too)
        { list: [ "…", "…" ] }                 short lines with a dash        ---- */
   function listOf(lines, soft) {
     var list = el("ul", soft ? "takeaways takeaways--soft" : "takeaways");
@@ -763,7 +768,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       li.appendChild(el("span", "steps__num mono", String(index + 1)));
       var body = el("div", "steps__body");
       body.appendChild(el("h4", "steps__name", step.name));
-      if (step.text) body.appendChild(el("p", "", step.text));
+      blocksOf(step.text, false).forEach(function (node) { body.appendChild(node); });   // one text, or a list of blocks
       li.appendChild(body);
       list.appendChild(li);
     });
@@ -791,8 +796,10 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     return blocks[0] || "";
   }
   function rowOf(label, nodes) {
-    var row = el("div", "row");
-    row.appendChild(el("dt", "", label));
+    var row = el("div", label ? "row" : "row row--plain");
+    var term = el("dt", "", label);
+    if (!label) term.hidden = true;               // no label: the content runs across the whole row
+    row.appendChild(term);
     var dd = el("dd");
     nodes.forEach(function (node) { if (node) dd.appendChild(node); });
     row.appendChild(dd);
@@ -807,7 +814,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       note.appendChild(el("p", "", d.noteText));
       desc.push(note);
     }
-    if (desc.length) rows.push(rowOf(d.descriptionLabel || "نبذة", desc));
+    if (desc.length) rows.push(rowOf(d.descriptionLabel == null ? "نبذة" : d.descriptionLabel, desc));
     (d.rows || []).forEach(function (extra) {
       var nodes = extra ? blocksOf(extra.content, false) : [];
       if (nodes.length) rows.push(rowOf(extra.label || "", nodes));
