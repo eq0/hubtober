@@ -22,6 +22,7 @@
    - DO NOT delete or overwrite older days. Only add the new one on top.
      Yesterday moves down to "التجارب السابقة" by itself.
    - Never add a day before its date. Whatever is in this file is public.
+   - A rest day gets no block: skip its number (Day 08 was a rest day).
    - Keep the quotes "..." and the comma after each line.
 
    FIELDS
@@ -55,8 +56,8 @@
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 8,
-      date: "8 أكتوبر 2026",
+      day: 10,
+      date: "10 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -88,6 +89,52 @@ const HUBTOBER = {
   totalDays: 31,   // days in the campaign (drives the day strip in the hero)
 
   days: [
+
+    /* ---------------------------- DAY 09 ---------------------------- */
+    /* (Day 08 was a rest day: no block, nothing to show.)                 */
+    {
+      day: 9,                                   // Day number
+      date: "9 أكتوبر 2026",                    // Date shown next to the day
+      label: "شيء اسمعه اليوم",                 // Heading beside the big number
+      type: "بودكاست",                          // Short word for the previous list
+      titleLabel: "حلقة اليوم",                 // Small label above the title
+      title: "ليش الموظف العراقي منهك نفسياً؟ مع د. حسن الشمّاع",   // Episode title
+
+      // Opening line (no label), shown as a strong statement
+      descriptionLabel: "",
+      description: [
+        { statement: "جمعة وويكند، فاليوم ما عدنا شي نسويه أو نجربه.\nبس عدنا حلقة نعتقد تستاهل تنسمع بهدوء." }
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      // About the episode, and why it feels right for now (no labels: a calm read)
+      rows: [
+        {
+          label: "",
+          content: [
+            "الحلقة تحچي عن علاقتنا بالشغل والإنجاز، وشلون تغير مفهومنا تجاه العمل بمرور الوقت، وكِمنا مرات نربط قيمتنا كبشر بشكد ننجز، شكد نشتغل، وشكد نحقق مهنياً.",
+            "ليش نحس بالذنب من نرتاح؟\nوليش الإنجاز صار جزء كبير من الطريقة الي نقيس بيها نفسنا؟\nوشنو تأثير هالشي على صحتنا النفسية؟",
+            "خصوصاً بهالفترة، ويا الضغط والقلق الاقتصادي وارتفاع الدولار وكل الأشياء الي جاي تصير حوالينا، يمكن هاي من أحسن الحلقات الي نسمعها بهذا الويكند.",
+            "حلقة تخلينا نوقف شوي ونراجع علاقتنا بالشغل، بالإنجاز، وبقيمتنا بعيداً عن الاثنين."
+          ]
+        }
+      ],
+
+      // No "why" / takeaways / examples / closing today: it is a weekend listen
+      whyLabel: "",
+      why: "",
+      takeawaysLabel: "",
+      takeaways: [],
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+      closing: "",
+
+      ctaText: "اسمع الحلقة",                   // Button text
+      url: "https://youtu.be/bsf_UsW4K_k?si=Hw06fw_r8ZKJP9Zf"   // Opens in a new tab
+    },
 
     /* ---------------------------- DAY 07 ---------------------------- */
     {
