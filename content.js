@@ -22,7 +22,8 @@
    - DO NOT delete or overwrite older days. Only add the new one on top.
      Yesterday moves down to "التجارب السابقة" by itself.
    - Never add a day before its date. Whatever is in this file is public.
-   - A rest day gets no block: skip its number (Day 08 was a rest day).
+   - A day with nothing to show gets no block: skip its number
+     (Day 08 was a rest day; Days 10 and 11 have no block either).
    - Keep the quotes "..." and the comma after each line.
 
    FIELDS
@@ -33,6 +34,9 @@
    - descriptionLabel the label of the first row. "" means no label: the
                       description then opens the day like an intro paragraph.
    - description      one text "…", or several paragraphs ["…", "…"].
+   - credits          optional names shown under the title, e.g.
+                      ["WHY Production", "Ali Jaber — Videographer"]. The first
+                      one is the filled chip. [] or leaving it out hides them.
    - noteTitle/noteText   optional small card under the description. "" hides it.
    - rows             optional extra rows between the description and the
                       "why" row. Each one is { label: "…", content: [ … ] }.
@@ -49,15 +53,16 @@
        { steps: [ { name: "…", text: "…" }, … ] }   numbered, easy to scan
                              (a step's text can itself be a list of blocks)
        { list: [ "…", "…" ] }                       short lines with a dash
-   Day 06 below uses all four. A line break inside a text is written \n.
+   Day 06 below uses all four. A line break inside a text is written \n,
+   and **two stars on each side** make a few words bold.
    - url              "https://…" shows a button that opens the link in a
                       new tab. "" means no button (for a do-it-yourself day).
 
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 10,
-      date: "10 أكتوبر 2026",
+      day: 13,
+      date: "13 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -89,6 +94,81 @@ const HUBTOBER = {
   totalDays: 31,   // days in the campaign (drives the day strip in the hero)
 
   days: [
+
+    /* ---------------------------- DAY 12 ---------------------------- */
+    /* (No blocks for Days 10 and 11.)                                     */
+    {
+      day: 12,                                  // Day number
+      date: "12 أكتوبر 2026",                   // Date shown next to the day
+      label: "اليوم ويا فريق WHY",              // Heading beside the big number
+      type: "ويا فريق WHY",                     // Short words for the previous list
+      titleLabel: "",                           // No small label above the title today
+      title: "لا تصور أكثر… صوّر أذكى.",          // Title
+
+      // Who this day comes from (shown under the title)
+      credits: ["WHY Production", "Ali Jaber — Videographer"],
+
+      // Opening text (no label)
+      descriptionLabel: "",
+      description: [
+        "اليوم HUBTOBER جاي من فريق **WHY Production**.",
+        "علي جابر، مصور فيديو، شارك ويانا واحدة من أكثر الأخطاء الي تواجه المصورين بالتغطيات:",
+        "إنك تاخذ فريمات هواي وبشكل عشوائي، وبعدين من توصل للـ edit تكتشف إن عندك كمية كبيرة من اللقطات بس مو بالضرورة تعرف شنو تستخدم، وين تستخدمه، أو حتى ليش أخذته من البداية.",
+        "وهنا يصير الـ edit أطول، أصعب، ومليان تردد."
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      rows: [
+        {
+          label: "",                            // the idea, no label
+          content: [
+            "الفكرة الي يريد يوصلها بسيطة:",
+            { headline: "لا تاخذ لقطات أكثر، خذ لقطات مدروسة." },
+            "قبل لا تصور، اعرف الفريم الي تريده.",
+            "اختار اللقطة صح، صورها صح، وخلي كل shot عنده سبب.",
+            "من توصل للـ edit، راح تكون حافظ الفريمات الي أخذتها، تعرف شنو عندك، وليش أخذته، ووين ممكن تستخدمه.",
+            "وهذا يخلي شغلك أسرع وأوضح من البداية للنهاية."
+          ]
+        },
+        {
+          label: "شنو نتعلم من هالشي؟",
+          content: [
+            { list: [
+              "مو عدد اللقطات هو الي يخلي التغطية أقوى.",
+              "كل frame لازم يكون عنده هدف.",
+              "التخطيط قبل التصوير يوفر وقت كبير بالـ edit.",
+              "اللقطات القليلة والمدروسة أحسن من كمية كبيرة عشوائية.",
+              "كلما كنت واعي بالـ shot وأنت تصوره، كلما صار الـ edit أسهل عليك."
+            ] }
+          ]
+        },
+        {
+          label: "الخلاصة",
+          content: [
+            { headline: "فكر بالفريم قبل لا تضغط Record." },
+            "صوّر أقل، بس اعرف ليش جاي تصور كل لقطة."
+          ]
+        }
+      ],
+
+      whyLabel: "",
+      why: "",
+      takeawaysLabel: "",
+      takeaways: [],
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+      closing: "",
+
+      /* >>> VIDEO LINK ------------------------------------------------------
+         Paste the link to Ali's video / story between the quotes below
+         (it must start with https://). Until then the url stays "" and the
+         "شوف نصيحة علي كاملة" button is simply not shown.                   */
+      ctaText: "شوف نصيحة علي كاملة",
+      url: ""
+    },
 
     /* ---------------------------- DAY 09 ---------------------------- */
     /* (Day 08 was a rest day: no block, nothing to show.)                 */

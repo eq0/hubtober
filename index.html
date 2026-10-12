@@ -296,6 +296,17 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
   font-size: clamp(28px, 4.6vw, 58px); line-height: 1.35;
   text-wrap: balance; overflow-wrap: anywhere;
 }
+/* Credits: who the day comes from. Latin names stay left-to-right inside the Arabic page;
+   the first one (the team) is the filled chip, the rest are outlined. */
+.credits { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(16px, 2.4vw, 22px); }
+.credits li {
+  direction: ltr; unicode-bidi: isolate;
+  padding: 5px 12px 6px;
+  border: 1px solid currentColor;
+  font-family: var(--font-mono); font-stretch: 87.5%; font-weight: 500;
+  font-size: clamp(12px, 1.1vw, 14px); line-height: 1.5; letter-spacing: .02em;
+}
+.credits li:first-child { font-weight: 800; background: var(--paper); color: var(--ink); border-color: var(--paper); }
 .today__rows { margin-top: clamp(28px, 4vw, 48px); border-top: 1px solid var(--rule-on-ink); }
 .row {
   display: grid; grid-template-columns: minmax(0, 1fr);
@@ -318,6 +329,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
   font-size: var(--t-lead); line-height: 1.5;
   text-wrap: pretty;
 }
+strong.nobr { white-space: nowrap; }   /* a short bold name never splits across lines */
 .say--big { font-weight: 800; font-size: clamp(24px, 3.3vw, 40px); line-height: 1.4; text-wrap: balance; }
 
 /* Numbered steps: a number, a name, one line each, easy to scan */
@@ -459,6 +471,8 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 .prev__rows .say { font-size: var(--t-md); }
 .prev__rows .say--big { font-size: clamp(20px, 2.4vw, 28px); }
 .prev__rows .steps__num { font-size: 30px; }
+.prev__body .credits { margin: 0 0 clamp(18px, 2.4vw, 24px); }
+.prev__body .credits li:first-child { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .prev__closing {
   margin-top: 22px;
   font-family: var(--font-display); font-weight: 700; font-size: var(--t-md); line-height: 1.6;
@@ -545,7 +559,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       <div class="strip" id="strip" hidden>
         <div class="strip__days" id="strip-days" aria-hidden="true"></div>
         <p class="strip__caption">
-          <span>اليوم <b id="strip-day">09</b> من <span id="strip-total">31</span></span>
+          <span>اليوم <b id="strip-day">12</b> من <span id="strip-total">31</span></span>
           <span>كل يوم بيومه</span>
         </p>
       </div>
@@ -561,13 +575,13 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     <section class="today" id="today" aria-labelledby="today-label">
       <div class="wrap">
         <header class="today__head reveal">
-          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">09</span></p>
+          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">12</span></p>
           <p class="today__date" data-today="date"></p>
         </header>
 
         <div class="today__grid">
           <div class="today__aside reveal">
-            <p class="today__num mono" aria-hidden="true" data-today="day">09</p>
+            <p class="today__num mono" aria-hidden="true" data-today="day">12</p>
             <div class="today__meta">
               <h2 class="tag" id="today-label" data-today="label"></h2>
             </div>
@@ -576,6 +590,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
           <article class="today__main reveal">
             <p class="field-label" data-today="titleLabel"></p>
             <h3 class="today__title" data-today="title"></h3>
+            <ul class="credits" id="today-credits" lang="en" hidden></ul>
 
             <dl class="today__rows" id="today-rows"></dl>
 
@@ -751,12 +766,26 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
        { steps: [ { name: "…", text: "…" } ] }  numbered, easy to scan
                                               (a step's text can be a list of blocks too)
        { list: [ "…", "…" ] }                 short lines with a dash        ---- */
+  // Text with **bold** parts (written in content.js as **…**); everything else stays plain text
+  function richInto(node, text) {
+    String(text == null ? "" : text).split("**").forEach(function (part, index) {
+      if (!part) return;
+      node.appendChild(index % 2 ? el("strong", part.length <= 32 ? "nobr" : "", part) : document.createTextNode(part));
+    });
+    return node;
+  }
+  function richEl(tag, className, text) { return richInto(el(tag, className), text); }
+  function creditsInto(list, d) {
+    (d.credits || []).filter(Boolean).forEach(function (name) { list.appendChild(el("li", "", name)); });
+    return list.children.length > 0;
+  }
+
   function listOf(lines, soft) {
     var list = el("ul", soft ? "takeaways takeaways--soft" : "takeaways");
     (lines || []).forEach(function (line) {
       if (!line) return;
       var li = el("li");
-      li.appendChild(el("span", "", line));
+      li.appendChild(richEl("span", "", line));
       list.appendChild(li);
     });
     return list;
@@ -768,7 +797,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       var li = el("li");
       li.appendChild(el("span", "steps__num mono", String(index + 1)));
       var body = el("div", "steps__body");
-      body.appendChild(el("h4", "steps__name", step.name));
+      body.appendChild(richEl("h4", "steps__name", step.name));
       blocksOf(step.text, false).forEach(function (node) { body.appendChild(node); });   // one text, or a list of blocks
       li.appendChild(body);
       list.appendChild(li);
@@ -783,10 +812,10 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       if (typeof block === "string") {
         var lead = leadFirst && texts > 1 && !seenText;   // with several paragraphs, the first reads as the lead
         seenText = true;
-        return el("p", lead ? "is-lead" : "", block);
+        return richEl("p", lead ? "is-lead" : "", block);
       }
-      if (block.headline) return el("p", "say say--big", block.headline);
-      if (block.statement) return el("p", "say", block.statement);
+      if (block.headline) return richEl("p", "say say--big", block.headline);
+      if (block.statement) return richEl("p", "say", block.statement);
       if (block.steps) return stepsOf(block.steps);
       if (block.list) return listOf(block.list, false);
       return null;
@@ -854,7 +883,10 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
     fill("date", today.date);
     fill("label", today.label || today.type);
     fill("titleLabel", today.titleLabel);
+    if (!today.titleLabel) document.querySelector('[data-today="titleLabel"]').hidden = true;
     fill("title", today.title);
+    var todayCredits = document.getElementById("today-credits");
+    if (creditsInto(todayCredits, today)) todayCredits.hidden = false;
     fill("ctaText", today.ctaText);
 
     var todayRows = document.getElementById("today-rows");
@@ -916,7 +948,7 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
       var title = el("h3", "prev__title");
       title.appendChild(el("span", "u", d.title));
       text.appendChild(title);
-      if (teaser) text.appendChild(el("p", "prev__desc", teaser));
+      if (teaser) text.appendChild(richEl("p", "prev__desc", teaser));
       head.appendChild(text);
       var more = el("span", "prev__cta");
       more.appendChild(el("span", "", "التفاصيل"));
@@ -926,6 +958,9 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 
       // Opened: the whole day, nothing left out
       var body = el("div", "prev__body");
+      var credits = el("ul", "credits");
+      credits.setAttribute("lang", "en");
+      if (creditsInto(credits, d)) body.appendChild(credits);
       var rows = el("dl", "prev__rows");
 
       rowsOf(d).forEach(function (row) { rows.appendChild(row); });
