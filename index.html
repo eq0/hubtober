@@ -275,13 +275,15 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 }
 .today__aside {
   display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap;                             /* a long label moves under the number instead of squeezing beside it */
   gap: 16px;
 }
 .today__num {
   font-weight: 800; font-stretch: 75%;
   font-size: clamp(120px, 27vw, 264px); line-height: .76; letter-spacing: -.05em; padding-right: .05em;
 }
-.today__meta { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.today__meta { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; max-width: 100%; margin-left: auto; }
+.tag .nobr { white-space: nowrap; }        /* a Latin team name stays on one line */
 .tag {
   display: inline-block;
   border: 1px solid currentColor;
@@ -349,6 +351,28 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
 .steps__name { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 1.7vw, 22px); line-height: 1.5; }
 .steps__body > * + * { margin-top: .55em; }
 .steps__body > .steps__name + * { margin-top: 2px; }
+
+/* Tools / apps: numbered like steps. Name, who it is for, what it is,
+   how to keep going, and a small button that opens it in a new tab. */
+.tools__name { font-weight: 800; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.35; }
+.steps__body > .tools__fit { margin-top: 4px; font-size: clamp(18px, 1.8vw, 22px); }
+.tools__label { font-family: var(--font-display); font-weight: 700; font-size: var(--t-base); line-height: 1.7; }
+.steps__body > .tools__label { margin-top: 1.1em; }
+.steps__body > .tools__label + * { margin-top: 2px; }
+.tools > li { padding-block: 22px 26px; }
+.tools > li:first-child { padding-top: 2px; }
+.tools > li:last-child { padding-bottom: 4px; }
+.link-btn {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 7px 16px 8px;
+  border: 1px solid currentColor;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--t-base); line-height: 1.6;
+  transition: background-color .3s var(--ease), color .3s var(--ease);
+}
+.steps__body > .link-btn { margin-top: 16px; }
+.link-btn .arrow { width: 1em; height: 1em; transition: transform .3s var(--ease); }
+.link-btn:hover, .link-btn:focus-visible { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.link-btn:hover .arrow, .link-btn:focus-visible .arrow { transform: translate(-3px, -3px); }
 
 /* Small "who is this?" card under the description */
 .row dd > .who { margin-top: 18px; }
@@ -471,6 +495,9 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
 .prev__rows .say { font-size: var(--t-md); }
 .prev__rows .say--big { font-size: clamp(20px, 2.4vw, 28px); }
 .prev__rows .steps__num { font-size: 30px; }
+.prev__rows .tools__name { font-size: clamp(19px, 2vw, 24px); }
+.prev__rows .steps__body > .tools__fit { font-size: var(--t-md); }
+.prev__rows .link-btn:hover, .prev__rows .link-btn:focus-visible { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .prev__body .credits { margin: 0 0 clamp(18px, 2.4vw, 24px); }
 .prev__body .credits li:first-child { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .prev__closing {
@@ -559,7 +586,7 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
       <div class="strip" id="strip" hidden>
         <div class="strip__days" id="strip-days" aria-hidden="true"></div>
         <p class="strip__caption">
-          <span>اليوم <b id="strip-day">12</b> من <span id="strip-total">31</span></span>
+          <span>اليوم <b id="strip-day">13</b> من <span id="strip-total">31</span></span>
           <span>كل يوم بيومه</span>
         </p>
       </div>
@@ -575,13 +602,13 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     <section class="today" id="today" aria-labelledby="today-label">
       <div class="wrap">
         <header class="today__head reveal">
-          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">12</span></p>
+          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">13</span></p>
           <p class="today__date" data-today="date"></p>
         </header>
 
         <div class="today__grid">
           <div class="today__aside reveal">
-            <p class="today__num mono" aria-hidden="true" data-today="day">12</p>
+            <p class="today__num mono" aria-hidden="true" data-today="day">13</p>
             <div class="today__meta">
               <h2 class="tag" id="today-label" data-today="label"></h2>
             </div>
@@ -765,7 +792,9 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
        { statement: "…" }                     a strong line
        { steps: [ { name: "…", text: "…" } ] }  numbered, easy to scan
                                               (a step's text can be a list of blocks too)
-       { list: [ "…", "…" ] }                 short lines with a dash        ---- */
+       { list: [ "…", "…" ] }                 short lines with a dash
+       { tools: [ { name, fit, text, howLabel, how, ctaText, url } ] }
+                                              numbered tools / apps, each with its own button ---- */
   // Text with **bold** parts (written in content.js as **…**); everything else stays plain text
   function richInto(node, text) {
     String(text == null ? "" : text).split("**").forEach(function (part, index) {
@@ -775,6 +804,21 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     return node;
   }
   function richEl(tag, className, text) { return richInto(el(tag, className), text); }
+  // Short Latin names inside Arabic text (e.g. a team name in the label) never split across lines
+  function keepLatinInto(node, text) {
+    node.textContent = "";
+    String(text == null ? "" : text).split(/([A-Za-z0-9][A-Za-z0-9&.'’ —–-]*[A-Za-z0-9])/).forEach(function (part, index) {
+      if (!part) return;
+      if (index % 2 && part.length <= 28) {
+        var keep = el("span", "nobr", part);
+        keep.setAttribute("lang", "en");
+        node.appendChild(keep);
+      } else {
+        node.appendChild(document.createTextNode(part));
+      }
+    });
+    return node;
+  }
   function creditsInto(list, d) {
     (d.credits || []).filter(Boolean).forEach(function (name) { list.appendChild(el("li", "", name)); });
     return list.children.length > 0;
@@ -804,6 +848,37 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     });
     return list;
   }
+  function toolsOf(tools) {
+    var list = el("ol", "steps tools");
+    (tools || []).forEach(function (tool, index) {
+      if (!tool) return;
+      var li = el("li");
+      li.appendChild(el("span", "steps__num mono", String(index + 1)));
+      var body = el("div", "steps__body");
+      var name = richEl("h4", "steps__name tools__name", tool.name);
+      name.setAttribute("lang", "en");
+      body.appendChild(name);
+      if (tool.fit) body.appendChild(richEl("p", "say tools__fit", tool.fit));       // who it is for
+      blocksOf(tool.text, false).forEach(function (node) { body.appendChild(node); });
+      var how = blocksOf(tool.how, false);
+      if (how.length && tool.howLabel) body.appendChild(el("p", "tools__label", tool.howLabel));
+      how.forEach(function (node) { body.appendChild(node); });
+      var url = String(tool.url || "").trim();
+      if (isLink(url)) {                                                              // no link, no button
+        var go = el("a", "link-btn");
+        go.href = url;
+        go.target = "_blank";
+        go.rel = "noopener noreferrer";
+        go.setAttribute("aria-label", (tool.ctaText || "افتح الرابط") + " — " + (tool.name || ""));
+        go.appendChild(el("span", "", tool.ctaText || "افتح الرابط"));
+        go.insertAdjacentHTML("beforeend", ARROW);
+        body.appendChild(go);
+      }
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+    return list;
+  }
   function blocksOf(value, leadFirst) {
     var blocks = (Array.isArray(value) ? value : [value]).filter(Boolean);
     var texts = blocks.filter(function (b) { return typeof b === "string"; }).length;
@@ -818,6 +893,7 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
       if (block.statement) return richEl("p", "say", block.statement);
       if (block.steps) return stepsOf(block.steps);
       if (block.list) return listOf(block.list, false);
+      if (block.tools) return toolsOf(block.tools);
       return null;
     }).filter(Boolean);
   }
@@ -882,6 +958,7 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     fill("day", pad(today.day));
     fill("date", today.date);
     fill("label", today.label || today.type);
+    keepLatinInto(document.getElementById("today-label"), today.label || today.type);
     fill("titleLabel", today.titleLabel);
     if (!today.titleLabel) document.querySelector('[data-today="titleLabel"]').hidden = true;
     fill("title", today.title);

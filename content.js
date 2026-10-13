@@ -53,7 +53,13 @@
        { steps: [ { name: "…", text: "…" }, … ] }   numbered, easy to scan
                              (a step's text can itself be a list of blocks)
        { list: [ "…", "…" ] }                       short lines with a dash
+       { tools: [ { name: "…", fit: "…", text: "…",
+                    howLabel: "…", how: [ "…" ],
+                    ctaText: "…", url: "https://…" }, … ] }
+                             numbered apps / tools, each with its own small
+                             button that opens its link in a new tab (Day 13)
    Day 06 below uses all four. A line break inside a text is written \n,
+   \u00a0 is a space that never breaks (keeps "voice\u00a0notes" together),
    and **two stars on each side** make a few words bold.
    - url              "https://…" shows a button that opens the link in a
                       new tab. "" means no button (for a do-it-yourself day).
@@ -61,8 +67,8 @@
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 13,
-      date: "13 أكتوبر 2026",
+      day: 14,
+      date: "14 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -94,6 +100,109 @@ const HUBTOBER = {
   totalDays: 31,   // days in the campaign (drives the day strip in the hero)
 
   days: [
+
+    /* ---------------------------- DAY 13 ---------------------------- */
+    {
+      day: 13,                                  // Day number
+      date: "13 أكتوبر 2026",                   // Date shown next to the day
+      label: "اليوم ويا فريق Tafa3ul Media — Baghdad",   // Heading beside the big number
+      type: "ويا فريق Tafa3ul Media — Baghdad",          // Short words for the previous list
+      titleLabel: "",                           // No small label above the title today
+      title: "خلي اللغة جزء من استخدامك اليومي للموبايل.",   // Title
+
+      // Who this day comes from (shown under the title)
+      credits: ["Tafa3ul Media — Baghdad", "Hussam Haider"],
+
+      // Opening text (no label)
+      descriptionLabel: "",
+      description: [
+        "اليوم حسام حيدر من فريق **Tafa3ul Media — Baghdad** شارك ويانا 4 تطبيقات ممكن تساعدك تطور لغتك من موبايلك.",
+        "بس الفكرة مو تنزلهم كلهم وتستخدمهم يومين وتتركهم.",
+        "كل تطبيق يفيدك بطريقة مختلفة، فاختار الي يناسب الشي الي تريد تطوره وخليه جزء صغير من يومك."
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      rows: [
+        {
+          label: "",                            // the four apps, no label
+          content: [
+            { tools: [
+              {
+                name: "Airlearn",
+                fit: "إذا تريد تتعلم بخطوات قصيرة وتفاعلية.",
+                text: "بيه دروس وتمارين قصيرة تساعدك تتعلم وتراجع اللغة بطريقة خفيفة وتفاعلية.",
+                howLabel: "شلون تستمر عليه؟",
+                how: [
+                  "خليه جزء من وقت صغير ثابت بيومك، حتى لو 10\u00a0دقايق.",
+                  "لا تنتظر يصير عندك وقت طويل حتى تتعلم."
+                ],
+                ctaText: "جرّبه",
+                url: "https://airlearn.com/"
+              },
+              {
+                name: "Busuu",
+                fit: "إذا تريد تتعلم بمسار أوضح ومنظم أكثر.",
+                text: "يفيدك إذا تحب تمشي باللغة خطوة بخطوة وتشتغل على القراءة، الكتابة، الاستماع والمحادثة.",
+                howLabel: "شلون تستمر عليه؟",
+                how: [
+                  "حدد المستوى أو الهدف الي تريد توصله، وامشِ بالدروس بالتسلسل بدل ما تتنقل عشوائي."
+                ],
+                ctaText: "جرّبه",
+                url: "https://www.busuu.com/"
+              },
+              {
+                name: "Duolingo",
+                fit: "إذا مشكلتك الأساسية هي الاستمرار.",
+                text: "دروسه قصيرة وطريقته أقرب للعبة، فمفيد حتى تخلي ممارسة اللغة عادة يومية بدون ما تحس إنك داخل جلسة دراسة طويلة.",
+                howLabel: "شلون تستمر عليه؟",
+                how: [
+                  "حدد وقت صغير جداً كل يوم وحافظ عليه.",
+                  "درس يومياً أفضل من حماس قوي أول أسبوع وبعدين توقف."
+                ],
+                ctaText: "جرّبه",
+                url: "https://www.duolingo.com/"
+              },
+              {
+                name: "Tandem",
+                fit: "إذا تعرف كلمات وقواعد، بس تحتاج تستخدم اللغة صدگ.",
+                text: "Tandem يربطك بأشخاص يتكلمون اللغة الي تريد تتعلمها، وتكدر تتمرن وياهم بالـ text، voice\u00a0notes أو المكالمات.",
+                howLabel: "شلون تستمر عليه؟",
+                how: [
+                  "لا تنتظر لغتك تصير perfect حتى تبدأ تحچي.",
+                  "اختار شخص أو اثنين وخلي عندك محادثة بسيطة ومستمرة وياهم."
+                ],
+                ctaText: "جرّبه",
+                url: "https://tandem.net/"
+              }
+            ] }
+          ]
+        },
+        {
+          label: "شنو نريد نطلع من اليوم؟",
+          content: [
+            "مو لازم تطبيق واحد يسوي لك كلشي.",
+            "ممكن تستخدم واحد حتى تبني عادة، واحد حتى تمشي بمنهج، وواحد حتى تحچي وي ناس حقيقيين.",
+            "المهم تعرف **شنو تريد تطور باللغة** وبعدين تختار الأداة على هذا الأساس."
+          ]
+        }
+      ],
+
+      whyLabel: "",
+      why: "",
+      takeawaysLabel: "",
+      takeaways: [],
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+
+      // Closing statement: the strongest line at the end of the day
+      closing: "مو المهم شكد تطبيق عندك، المهم شكد فعلاً تستخدمه.",
+
+      ctaText: "",
+      url: ""                                   // No main button: each app has its own
+    },
 
     /* ---------------------------- DAY 12 ---------------------------- */
     /* (No blocks for Days 10 and 11.)                                     */
