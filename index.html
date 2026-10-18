@@ -333,6 +333,22 @@ summary:hover .u, summary:focus-visible .u { background-size: 100% 1px; }
 }
 strong.nobr { white-space: nowrap; }   /* a short bold name never splits across lines */
 .say--big { font-weight: 800; font-size: clamp(24px, 3.3vw, 40px); line-height: 1.4; text-wrap: balance; }
+/* The key line: the one idea of the day, as big as the title */
+.say--xl { font-weight: 800; font-size: clamp(32px, 5.2vw, 62px); line-height: 1.3; text-wrap: balance; }
+.row dd > .say--xl { margin-block: .4em .3em; }
+
+/* A simple flow: words joined by thin arrows, read right to left */
+.flow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(17px, 2.4vw, 30px); line-height: 1.5;
+}
+.flow__arrow { display: flex; align-items: center; }
+.flow__arrow svg { width: 1em; height: .7em; }
+@media (min-width: 700px) {
+  .flow { gap: 6px 14px; }
+  .flow__arrow svg { width: 1.3em; height: .8em; }
+}
 
 /* Numbered steps: a number, a name, one line each, easy to scan */
 .steps { display: flex; flex-direction: column; }
@@ -416,6 +432,10 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
   text-wrap: balance;
 }
 .today__closing span, .prev__closing span { display: block; }
+.today__closing .is-latin, .prev__closing .is-latin {
+  text-align: right;
+  font-family: var(--font-mono); font-stretch: 87.5%; letter-spacing: -.02em;
+}
 .today__closing .is-soft { font-weight: 300; }
 .today__urlnote {
   margin-top: 12px;
@@ -425,6 +445,7 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
 
 @media (min-width: 700px) {
   .row { grid-template-columns: 240px minmax(0, 1fr); }
+  .row:not(.row--plain) dd > .say--xl { margin-inline-start: calc(-240px - 32px); }   /* the key line runs the full width of the day */
   .btn { display: inline-flex; min-width: 320px; }
 }
 @media (min-width: 900px) {
@@ -494,6 +515,8 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
 .prev__rows .who p, .prev__rows .takeaways--soft { color: var(--ink-soft); }
 .prev__rows .say { font-size: var(--t-md); }
 .prev__rows .say--big { font-size: clamp(20px, 2.4vw, 28px); }
+.prev__rows .say--xl { font-size: clamp(24px, 3.4vw, 40px); }
+.prev__rows .flow { font-size: clamp(16px, 1.9vw, 22px); }
 .prev__rows .steps__num { font-size: 30px; }
 .prev__rows .tools__name { font-size: clamp(19px, 2vw, 24px); }
 .prev__rows .steps__body > .tools__fit { font-size: var(--t-md); }
@@ -586,7 +609,7 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
       <div class="strip" id="strip" hidden>
         <div class="strip__days" id="strip-days" aria-hidden="true"></div>
         <p class="strip__caption">
-          <span>اليوم <b id="strip-day">13</b> من <span id="strip-total">31</span></span>
+          <span>اليوم <b id="strip-day">18</b> من <span id="strip-total">31</span></span>
           <span>كل يوم بيومه</span>
         </p>
       </div>
@@ -602,13 +625,13 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     <section class="today" id="today" aria-labelledby="today-label">
       <div class="wrap">
         <header class="today__head reveal">
-          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">13</span></p>
+          <p class="today__eyebrow mono" lang="en">HUBTOBER — DAY <span data-today="day">18</span></p>
           <p class="today__date" data-today="date"></p>
         </header>
 
         <div class="today__grid">
           <div class="today__aside reveal">
-            <p class="today__num mono" aria-hidden="true" data-today="day">13</p>
+            <p class="today__num mono" aria-hidden="true" data-today="day">18</p>
             <div class="today__meta">
               <h2 class="tag" id="today-label" data-today="label"></h2>
             </div>
@@ -794,7 +817,9 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
                                               (a step's text can be a list of blocks too)
        { list: [ "…", "…" ] }                 short lines with a dash
        { tools: [ { name, fit, text, howLabel, how, ctaText, url } ] }
-                                              numbered tools / apps, each with its own button ---- */
+                                              numbered tools / apps, each with its own button
+       { keyline: "…" }                       the one idea of the day, as big as the title
+       { flow: [ "…", "…", "…" ] }            a few words joined by arrows        ---- */
   // Text with **bold** parts (written in content.js as **…**); everything else stays plain text
   function richInto(node, text) {
     String(text == null ? "" : text).split("**").forEach(function (part, index) {
@@ -879,6 +904,20 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     });
     return list;
   }
+  var FLOW_ARROW = '<svg viewBox="0 0 24 16" aria-hidden="true"><path d="M23 8H2.5M8 2.5L2.5 8L8 13.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>';
+  function flowOf(words) {
+    var list = el("ol", "flow");
+    (words || []).filter(Boolean).forEach(function (word, index) {
+      if (index) {
+        var arrow = el("li", "flow__arrow");
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.innerHTML = FLOW_ARROW;
+        list.appendChild(arrow);
+      }
+      list.appendChild(richEl("li", "flow__step", word));
+    });
+    return list;
+  }
   function blocksOf(value, leadFirst) {
     var blocks = (Array.isArray(value) ? value : [value]).filter(Boolean);
     var texts = blocks.filter(function (b) { return typeof b === "string"; }).length;
@@ -894,6 +933,8 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
       if (block.steps) return stepsOf(block.steps);
       if (block.list) return listOf(block.list, false);
       if (block.tools) return toolsOf(block.tools);
+      if (block.keyline) return richEl("p", "say say--xl", block.keyline);
+      if (block.flow) return flowOf(block.flow);
       return null;
     }).filter(Boolean);
   }
@@ -936,11 +977,22 @@ strong.nobr { white-space: nowrap; }   /* a short bold name never splits across 
     }
     return rows;
   }
-  // Closing: one line, or several (the last one carries the weight)
+  // Closing: one line, or several (the last one carries the weight).
+  // A line written as "**…**" is strong too. A line with no Arabic in it runs left to right.
   function closingInto(node, d) {
     var lines = (Array.isArray(d.closing) ? d.closing : [d.closing]).filter(Boolean);
     lines.forEach(function (line, index) {
-      node.appendChild(el("span", index === lines.length - 1 ? "is-strong" : "is-soft", line));
+      var text = String(line);
+      var strong = index === lines.length - 1;
+      var marked = /^\*\*([\s\S]+)\*\*$/.exec(text.trim());
+      if (marked) { text = marked[1]; strong = true; }
+      var span = el("span", strong ? "is-strong" : "is-soft", text);
+      if (!/[\u0600-\u06FF]/.test(text)) {
+        span.className += " is-latin";
+        span.setAttribute("dir", "ltr");
+        span.setAttribute("lang", "en");
+      }
+      node.appendChild(span);
     });
     return lines.length > 0;
   }

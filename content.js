@@ -23,7 +23,8 @@
      Yesterday moves down to "التجارب السابقة" by itself.
    - Never add a day before its date. Whatever is in this file is public.
    - A day with nothing to show gets no block: skip its number
-     (Day 08 was a rest day; Days 10 and 11 have no block either).
+     (Day 08 was a rest day; Days 10, 11, 14, 15, 16 and 17 have no
+     block either).
    - Keep the quotes "..." and the comma after each line.
 
    FIELDS
@@ -45,7 +46,8 @@
    - takeaways        a few short lines.
    - examples         optional list of starting ideas. [] hides the whole row.
    - closing          optional last line under the day. "" hides it. With two
-                      lines ["…", "…"] the last one is the strong one.
+                      lines ["…", "…"] the last one is the strong one; a line
+                      written "**…**" is strong too (Day 18).
 
    INSIDE description, why AND A ROW'S content, besides plain "…" paragraphs:
        { headline: "…" }     the big line of the day (for example the question)
@@ -58,6 +60,8 @@
                     ctaText: "…", url: "https://…" }, … ] }
                              numbered apps / tools, each with its own small
                              button that opens its link in a new tab (Day 13)
+       { keyline: "…" }      the one idea of the day, as big as the title (Day 18)
+       { flow: [ "…", "…", "…" ] }   a few words joined by arrows (Day 18)
    Day 06 below uses all four. A line break inside a text is written \n,
    \u00a0 is a space that never breaks (keeps "voice\u00a0notes" together),
    and **two stars on each side** make a few words bold.
@@ -67,8 +71,8 @@
    TEMPLATE (copy from the opening { to the closing }, )
 
     {
-      day: 14,
-      date: "14 أكتوبر 2026",
+      day: 19,
+      date: "19 أكتوبر 2026",
       label: "شيء اسمعه اليوم",
       type: "بودكاست",
       titleLabel: "عنوان اليوم",
@@ -100,6 +104,102 @@ const HUBTOBER = {
   totalDays: 31,   // days in the campaign (drives the day strip in the hero)
 
   days: [
+
+    /* ---------------------------- DAY 18 ---------------------------- */
+    /* (No blocks for Days 14, 15, 16 and 17: nothing was published.)       */
+    {
+      day: 18,                                  // Day number
+      date: "18 أكتوبر 2026",                   // Date shown next to the day
+      label: "اليوم ويا نور من WHY Production",   // Heading beside the big number
+      type: "ويا نور من WHY Production",          // Short words for the previous list
+      titleLabel: "",                           // No small label above the title today
+      title: "الرسمة ما لازم تبقى بس على الشاشة.",   // Title
+
+      // Who this day comes from (shown under the title)
+      credits: ["WHY Production", "Noor — Digital Artist"],
+
+      // Opening text (no label)
+      descriptionLabel: "",
+      description: [
+        "اليوم نور، Digital Artist من فريق **WHY Production**، تشارك ويانا شلون ممكن نحول الـ\u00a0Digital Art من مجرد رسمة على الشاشة إلى شي فعلي نشوفه ونستخدمه بمكان حقيقي.",
+        "بس قبل كلشي، أكو خطوة مهمة:"
+      ],
+
+      noteTitle: "",
+      noteText: "",
+
+      rows: [
+        {
+          label: "القياسات.",
+          content: [
+            "لأن حتى لو الرسمة حلوة، إذا القياسات مو صحيحة ممكن تنطبع بالمكان الغلط، تنقص، أو ما تطلع بالشكل الي تخيلناه.",
+            "ولهذا:",
+            { keyline: "قياسات صحيحة = نتيجة صحيحة." },
+            "قبل لا تبدأ تجهز أي رسمة للطباعة، فكر:",
+            "وين راح تنحط؟\nشنو حجم المكان؟\nوشكد لازم يكون حجم التصميم؟",
+            "لأن تصميم راح ينطبع على booth مو نفس تصميم كوب، وغلاف كتاب مو نفس لوحة أو مطبوعة كبيرة."
+          ]
+        },
+        {
+          label: "من الشاشة للواقع",
+          content: [
+            "من تكون القياسات واضحة، الرسمة تكدر تتحول لأشياء هواي.",
+            "ممكن تكون:",
+            { list: [
+              "جزء من booth",
+              "كوب",
+              "غلاف كتاب",
+              "لوحة",
+              "مطبوعات",
+              "تغليف",
+              "أو أي مساحة ثانية تريد تضيفلها لمستك"
+            ] },
+            "وهنا الـ\u00a0Digital Art يبدي يصير أكثر من مجرد رسمة.",
+            "يبدي يصنع **هوية ولمسة واضحة** بالمكان أو الشي الي موجود عليه."
+          ]
+        },
+        {
+          label: "",                            // the whole lesson in four words
+          content: [
+            { flow: ["رسمة", "قياسات", "تطبيق", "هوية"] }
+          ]
+        },
+        {
+          label: "شنو نتعلم من هالشي؟",
+          content: [
+            { list: [
+              "فكر بمكان استخدام الرسمة قبل لا تجهزها.",
+              "القياسات جزء من التصميم، مو خطوة ثانوية.",
+              "نفس الرسمة ممكن تعيش بأكثر من شكل.",
+              "لازم نفكر بالتطبيق النهائي مو بس بالشكل على الشاشة.",
+              "أسلوبك يگدر يتحول إلى هوية واضحة إذا حافظت على لمستك."
+            ] }
+          ]
+        },
+        {
+          label: "والأهم؟",
+          content: [
+            "مو كلشي لازم يشبه شي شفناه قبل.",
+            "الـ\u00a0Digital Art يعطيك مساحة تخلي أسلوبك حاضر وين ما تروح الرسمة.",
+            "على كوب، كتاب، booth، لوحة أو أي شي ثاني."
+          ]
+        }
+      ],
+
+      whyLabel: "",
+      why: "",
+      takeawaysLabel: "",
+      takeaways: [],
+      examplesLabel: "",
+      examples: [],
+      examplesNote: "",
+
+      // Closing: both lines strong
+      closing: ["**خليها تشبهك.**", "Be original."],
+
+      ctaText: "",
+      url: ""                                   // No link today
+    },
 
     /* ---------------------------- DAY 13 ---------------------------- */
     {
